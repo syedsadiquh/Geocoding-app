@@ -1,1 +1,2 @@
+Python>=3.6.10
 requests==2.31.0
