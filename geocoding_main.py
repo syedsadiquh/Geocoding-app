@@ -25,7 +25,7 @@ This method will accept the address to find lat and lng as String and api_key wh
 It returns a list with latitute and longitude i.e. [latitude, longitude]
 '''
 def forward_geocode_results(address, api_key = None):      # TODO: Get a param to ask if they need full info or stripped.
-    # TODO: Handle the Connction Errors...
+    # TODO: #1 Handle the Connction Errors...
     # Setitng up the forward geocode api url
     forward_geocode_url = "https://api.opencagedata.com/geocode/v1/json?q={}".format(address)
     if api_key is not None:
@@ -71,7 +71,7 @@ This method will accept the latitude and Longitudes as float to find the address
 It returns a list with latitute and longitude i.e. [latitude, longitude]
 '''
 def reverse_geocode_results(lat = 0.0, lng = 0.0, api_key = None):
-    #TODO: complete this method...
+    #TODO: #2 complete this method...
     pass
 
 print(forward_geocode_results("", API_KEY))
