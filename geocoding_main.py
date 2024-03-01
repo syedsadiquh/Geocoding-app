@@ -130,5 +130,5 @@ def reverse_geocode_results(lat, lng, api_key = None):
     
     return geoloc
 
-# print(forward_geocode_results("Rairangpur", API_KEY))
+print(forward_geocode_results("Rairangpur", API_KEY))
 print(reverse_geocode_results(22.2642334, 86.180774, API_KEY))
