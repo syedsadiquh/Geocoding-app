@@ -24,7 +24,7 @@ API_KEY = "c84c08d456004f69947f60ce5bf0fe7b"
 This method will accept the address to find lat and lng as String and api_key which is declared in configuration.
 It returns a list with latitute and longitude i.e. [latitude, longitude]
 '''
-def forward_geocode_results(address, api_key = None):      # TODO: Get a param to ask if they need full info or stripped.
+def forward_geocode_results(address, api_key = None):      
     # TODO: #1 Handle the Connction Errors of both methods.
     # Setitng up the forward geocode api url
     forward_geocode_url = "https://api.opencagedata.com/geocode/v1/json?q={}".format(address)
@@ -79,7 +79,7 @@ def forward_geocode_results(address, api_key = None):      # TODO: Get a param t
 This method will accept the latitude and Longitudes as float to find the address and api_key which is declared in configuration.
 It returns a list with latitute and longitude i.e. [latitude, longitude]
 '''
-def reverse_geocode_results(lat, lng, api_key = None):
+def reverse_geocode_results(lat, lng, api_key = None):      # TODO: Get a param to ask if they need full info or stripped.
     # Setitng up the forward geocode api url
     reverse_geocode_url = "https://api.opencagedata.com/geocode/v1/json?q={},{}".format(lat,lng)
     if api_key is not None:
@@ -130,5 +130,5 @@ def reverse_geocode_results(lat, lng, api_key = None):
     
     return geoloc
 
-print(forward_geocode_results("Rairangpur", API_KEY))
-print(reverse_geocode_results(22.2642334, 86.180774, API_KEY))
+# print(forward_geocode_results("Rairangpur", API_KEY))
+# print(reverse_geocode_results(20.2215795,85.6735783, API_KEY))
