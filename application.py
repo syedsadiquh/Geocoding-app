@@ -1,44 +1,63 @@
 import tkinter as tk
 
-window = tk.Tk(className=" Geo-Coder")
-top_frame = tk.Frame(height=200, width= 200)
-frame_b = tk.Frame(height=200, width= 200)
+class Application:
+    def __init__(self, master):
+        self.master = master
+        self.heading_frame = tk.Frame(self.master)
+        self.forward = False
+        
+        self.welcome_txt = tk.Label(
+            text="Welcome to Geocoding",
+            pady=20,
+            font=('Helvetica bold', 26),
+        )
+        self.welcome_txt.pack()
+        
+        # Guide text for the Geocoding mode
+        self.geocoding_mode_text = tk.Label(
+            master=self.heading_frame,
+            text="Current Geocoding mode : "
+        )
+        self.geocoding_mode_text.grid(row=2)
+        
+        # Current Geocoding Mode
+        self.geocoding_mode = tk.Label(
+            master=self.heading_frame,
+            padx=5,
+            text="Forward Geocoding"
+        )
+        self.geocoding_mode.grid(row=2, column=2)
+        
+        # Switch Button for switching between mode
+        self.switch_button = tk.Button(
+            master=self.heading_frame,
+            text="Switch",
+            padx=10,
+            command=self.button_mode
+        )
+        self.switch_button.grid(row=2, column=4)
+        self.heading_frame.pack()
+    # This method is for Switching modes
+    def button_mode(self):
+        global forward
+        # Determine it is on or off
+        if self.forward:
+            self.geocoding_mode.config(text="Forward Geocoding")
+            # reverse_frame.pack_forget()
+            # forward_frame.pack()
+            self.forward = False
+        else:
+            self.geocoding_mode.config(text="Reverse Geocoding")
+            # forward_frame.pack_forget()
+            # reverse_frame.pack()
+            self.forward = True
 
-forward = False
-def button_mode():
-    global forward
+def main():
+    root = tk.Tk()
+    root.geometry("720x520")
+    root.title("Geo-Coding")
+    app = Application(root)
+    root.mainloop()
 
-    # Determine it is on or off
-    if forward:
-        geocoding_mode.config(text="Forward Geocoding Enabled.")
-        button.config(text="Reverse")
-        forward = False
-    else:
-        geocoding_mode.config(text="Reverse Geocoding Enabled.")
-        button.config(text="Forward")
-        forward = True
-
-welcome_txt = tk.Label(
-    master=top_frame,
-    text="Welcome to Geocoding",
-)
-
-geocoding_mode = tk.Label(
-    master=top_frame,
-    text="Forward Geocoding Enabled."
-)
-
-button = tk.Button(
-    master= frame_b,
-    text="Reverse",
-    bg="black",
-    command=button_mode
-)
-welcome_txt.pack()
-geocoding_mode.pack()
-button.pack()
-
-top_frame.pack()
-frame_b.pack()
-
-window.mainloop()
+if __name__ == '__main__':
+    main()
