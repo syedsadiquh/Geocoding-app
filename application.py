@@ -1,5 +1,8 @@
 import tkinter as tk
+from tkinter import messagebox
+
 import geocoding_main as gc
+from geocoding_main import QueryError
 
 
 # This is the staring part of the 'APP'.
@@ -99,9 +102,14 @@ class ForwardGeocoding:
         self.lat_lng_frame.grid(row=1, column=4, pady=20, sticky=tk.N)
 
     def get_address(self):
-        self.lat_lng = gc.forward_geocode_results(self.address_box.get("1.0", "end-1c"), gc.API_KEY)
-        self.lat.config(text=str(self.lat_lng[0]))
-        self.lng.config(text=str(self.lat_lng[1]))
+        try:
+            self.lat_lng = gc.forward_geocode_results(self.address_box.get("1.0", "end-1c"), gc.API_KEY)
+            self.lat.config(text=str(self.lat_lng[0]))
+            self.lng.config(text=str(self.lat_lng[1]))
+        except ConnectionError as ce:
+            messagebox.showerror(title="Error!", message=str(ce), icon='error')
+        except QueryError as qe:
+            messagebox.showerror(title="Error!", message=qe.message, icon='error')
 
 
 # This Class is for the Reverse Geocoding widget
@@ -138,8 +146,13 @@ class ReverseGeocoding:
         self.address_frame.grid(row=0, column=4, padx=30, pady=30)
 
     def get_address(self):
-        self.address = gc.reverse_geocode_results(self.lat_entry.get(), self.lng_entry.get(), gc.API_KEY)
-        self.address_label.config(text=str(self.address))
+        try:
+            self.address = gc.reverse_geocode_results(self.lat_entry.get(), self.lng_entry.get(), gc.API_KEY)
+            self.address_label.config(text=str(self.address))
+        except ConnectionError as ce:
+            messagebox.showerror(title="Error!", message=str(ce), icon='error')
+        except QueryError as qe:
+            messagebox.showerror(title="Error!", message=qe.message, icon='error')
 
 
 def main():

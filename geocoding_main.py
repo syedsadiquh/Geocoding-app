@@ -28,7 +28,7 @@ It returns a list with latitude and longitude i.e. [latitude, longitude]
 
 class QueryError(Exception):
     def __init__(self, msg):
-        self.value = msg
+        self.message = msg
 
 
 def forward_geocode_results(address, api_key=None):
@@ -143,8 +143,11 @@ def reverse_geocode_results(lat, lng, api_key=None):  # TODO: Get a param to ask
     # geo_loc.append(response["results"]["components"]["city"])     # city
     # geo_loc.append(response["results"]["components"]["country"])     # country
     # geo_loc.append(response["results"]["components"]["continent"])     # continent
+    if response["total_results"] > 0:
+        geo_loc = response["results"][0]["formatted"]  # Pre-formatted address.
+    else:
+        raise QueryError("Invalid Latitude or Longitude")
 
-    geo_loc = response["results"][0]["formatted"]  # Pre-formatted address.
 
     return geo_loc
 
