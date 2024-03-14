@@ -159,6 +159,7 @@ def main():
     root = tk.Tk()
     root.geometry("720x520")
     root.title("Geo-Coding")
+    root.iconphoto(False, tk.PhotoImage(file="Assets/Icons/globe_icon.png"))
     _ = Application(root)
     root.mainloop()
 
