@@ -4,21 +4,25 @@ from tkinter import messagebox
 import geocoding_main as gc
 from geocoding_main import QueryError
 
+from History_Screen import HistoryWindow
+
 
 # This is the staring part of the 'APP'.
 class Application:
     def __init__(self, master):
         self.master = master
-        self.heading_frame = tk.Frame(self.master)
         self.forward = False  # Variable for switching modes.
+        self.history_window = ""
 
         self.welcome_txt = tk.Label(
+            master= self.master,
             text="Welcome to Geocoding",
             pady=20,
             font=('Helvetica bold', 26),
         )
         self.welcome_txt.pack()
 
+        self.heading_frame = tk.Frame(self.master)
         # Guide to text for the Geocoding mode
         self.geocoding_mode_text = tk.Label(
             master=self.heading_frame,
@@ -45,6 +49,16 @@ class Application:
         self.switch_button.grid(row=2, column=4)
         self.heading_frame.pack()
 
+        # History button.
+        self.history_button = tk.Button(
+            master=self.master,
+            text="History",
+            height=1,
+            width=10,
+            command=self.open_history
+        )
+        self.history_button.pack(anchor='w', padx=150)
+
         # Frame for Forward Geocoding.
         self.f_frame = tk.Frame(master=self.master, pady=30)
         self.f_geo = ForwardGeocoding(self.f_frame)
@@ -53,6 +67,13 @@ class Application:
         # Frame for Reverse Geocoding.
         self.r_frame = tk.Frame(master=self.master, pady=30)
         self.r_geo = ReverseGeocoding(master=self.r_frame)
+
+    def open_history(self):
+        self.history_window = tk.Toplevel()
+        self.history_window.title("History")
+        self.history_window.geometry("500x500")
+        _ = HistoryWindow(self.history_window)
+        self.history_window.mainloop()
 
     # This method is for Switching modes
     def button_mode(self):
