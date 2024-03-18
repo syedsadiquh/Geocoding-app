@@ -1,36 +1,51 @@
 import sqlite3 as sql
 
 
+# Global file path to database.
+db_path = "./SQLiteDB/geocoding_data.db"
+
+
 class DBConnect:
-    def __init__(self, file_name):
+    def __init__(self):
         try:
-            self.conn = sql.connect(file_name)
+            self.conn = sql.connect(db_path)
             self.cursor = self.conn.cursor()
             print("Connected to SQLite database")
         except sql.Error as e:
             print("Error while connecting to SQLite database :", e)
 
-    def create_table(self, table_name):
+    def create_table(self):
         try:
-            self.cursor.execute('''CREATE TABLE IF NOT EXISTS ? (id INTEGER PRIMARY KEY AUTOINCREMENT, 
-            query TEXT, response TEXT''',
-                                (table_name,))
-        except sql.OperationalError:
-            pass
+            self.cursor.execute("CREATE TABLE GeoData(id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                                "query TEXT," +
+                                "response TEXT);")
+            self.conn.commit()
+        except sql.OperationalError as e:
+            print("Error while creating the Table :", e)
+            self.conn.rollback()
 
-    def insert_into_table(self, table_name, _query, _response):
+    def insert_into_table(self, _query, _response):
         try:
-            self.cursor.execute("INSERT INTO ?(query, response) VALUES (?, ?)",
-                               [(table_name, _query, _response)])
-        except sql.OperationalError:
-            print("Error while inserting to database.")
+            self.cursor.execute('''INSERT INTO GeoData(query, response) VALUES (?, ?)''',
+                                (_query, _response))
+            self.conn.commit()
+        except sql.OperationalError as e:
+            print("Error while inserting to database :", e)
+            self.conn.rollback()
 
-    def read_all(self, table_name):
-        data = self.cursor.execute(
-            "SELECT * FROM ?",
-            (table_name,)
-        ).fetchall()
-        return data
+    def read_all(self):
+        try:
+            data = self.cursor.execute(
+                "SELECT * FROM GeoData"
+            ).fetchall()
+            self.conn.commit()
+            if data is not None:
+                return data
+            else:
+                return ()
+        except sql.OperationalError as e:
+            print("Error while reading from database :", e)
+            self.conn.rollback()
 
     def close_connection(self):
         self.cursor.close()
