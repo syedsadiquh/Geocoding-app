@@ -148,7 +148,6 @@ def reverse_geocode_results(lat, lng, api_key=None):  # TODO: Get a param to ask
     else:
         raise QueryError("Invalid Latitude or Longitude")
 
-
     return geo_loc
 
 # print(forward_geocode_results("Gandhi Institute for Technology", API_KEY))

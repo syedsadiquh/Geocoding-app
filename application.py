@@ -3,6 +3,7 @@ from tkinter import messagebox
 
 import geocoding_main as gc
 from geocoding_main import QueryError
+from dbConnector import DBConnect
 
 from History_Screen import HistoryWindow
 
@@ -15,7 +16,7 @@ class Application:
         self.history_window = ""
 
         self.welcome_txt = tk.Label(
-            master= self.master,
+            master=self.master,
             text="Welcome to Geocoding",
             pady=20,
             font=('Helvetica bold', 26),
@@ -127,6 +128,20 @@ class ForwardGeocoding:
             self.lat_lng = gc.forward_geocode_results(self.address_box.get("1.0", "end-1c"), gc.API_KEY)
             self.lat.config(text=str(self.lat_lng[0]))
             self.lng.config(text=str(self.lat_lng[1]))
+            db = DBConnect()
+            db.create_table()
+            # Checking if the given address is already present in the db as query
+            present_in_db = False
+            for row in db.read_all():
+                if self.address_box.get("1.0", "end-1c") in row:
+                    present_in_db = True
+            # Adding in db only if the address in not present in db as query
+            if not present_in_db:
+                db.insert_into_table(
+                    _query=self.address_box.get("1.0", "end-1c"),
+                    _response=str([self.lat_lng[0], self.lat_lng[1]])
+                )
+            db.close_connection()
         except ConnectionError as ce:
             messagebox.showerror(title="Error!", message=str(ce), icon='error')
         except QueryError as qe:
@@ -170,6 +185,19 @@ class ReverseGeocoding:
         try:
             self.address = gc.reverse_geocode_results(self.lat_entry.get(), self.lng_entry.get(), gc.API_KEY)
             self.address_label.config(text=str(self.address))
+            db = DBConnect()
+            db.create_table()
+            # Checking if the [lat,lng] is already present in history/db
+            present_in_db = False
+            for row in db.read_all():
+                if str([self.lat_entry.get(), self.lng_entry.get()]) in row:
+                    present_in_db = True
+                    break
+            # Inserting [lat,lng] into table only when it is not present in db as query
+            if not present_in_db:
+                db.insert_into_table(_query=str([self.lat_entry.get(), self.lng_entry.get()]),
+                                     _response=str(self.address))
+            db.close_connection()
         except ConnectionError as ce:
             messagebox.showerror(title="Error!", message=str(ce), icon='error')
         except QueryError as qe:
