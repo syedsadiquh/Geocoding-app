@@ -47,6 +47,15 @@ class DBConnect:
             print("Error while reading from database :", e)
             self.conn.rollback()
 
+    def clear_all_history(self):
+        try:
+            self.cursor.execute("DELETE FROM GeoData")
+            self.cursor.execute("UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='GeoData';")
+            self.conn.commit()
+            print("All history Cleared Successfully")
+        except sql.OperationalError as e:
+            print("Error while clearing :", e)
+
     def close_connection(self):
         self.cursor.close()
         self.conn.close()
