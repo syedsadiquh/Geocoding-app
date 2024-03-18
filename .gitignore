@@ -1,6 +1,8 @@
 .DS_Store
 # This is to skip the PyCharm IDE files
 /.idea/
+# Run configuration for PyCharm IDE
+/.run/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
