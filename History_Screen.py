@@ -35,7 +35,7 @@ class HistoryWindow:
 
             self.clear_button = tk.Button(master=self.master, text="Clear History",
                                           command=self.clr_all_hist)
-            self.clear_button.pack()
+            self.clear_button.pack(pady=10)
 
         else:
             self.empty_label = tk.Label(self.master, text="No Data Found", font=('Helvetica bold', 14))
@@ -49,5 +49,5 @@ class HistoryWindow:
         db.close_connection()
         self.tree.pack_forget()
         self.clear_button.pack_forget()
-        clear_label = tk.Label(master=self.master, text="all History Cleared", font=('Helvetica bold', 16))
+        clear_label = tk.Label(master=self.master, text="All History Cleared", font=('Helvetica bold', 16))
         clear_label.pack()

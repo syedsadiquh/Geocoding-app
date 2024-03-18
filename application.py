@@ -69,10 +69,11 @@ class Application:
         self.r_frame = tk.Frame(master=self.master, pady=30)
         self.r_geo = ReverseGeocoding(master=self.r_frame)
 
+    # Opens a new window for the History.
     def open_history(self):
         self.history_window = tk.Toplevel()
         self.history_window.title("History")
-        self.history_window.geometry("500x500")
+        self.history_window.geometry("500x350")
         _ = HistoryWindow(self.history_window)
         self.history_window.mainloop()
 
@@ -142,6 +143,9 @@ class ForwardGeocoding:
                     _response=str([self.lat_lng[0], self.lat_lng[1]])
                 )
             db.close_connection()
+            # Clearing the Address Box after submitting
+            self.address_box.delete('1.0', 'end')
+
         except ConnectionError as ce:
             messagebox.showerror(title="Error!", message=str(ce), icon='error')
         except QueryError as qe:
@@ -198,6 +202,10 @@ class ReverseGeocoding:
                 db.insert_into_table(_query=str([self.lat_entry.get(), self.lng_entry.get()]),
                                      _response=str(self.address))
             db.close_connection()
+            # clearing the Entry box at the end.
+            self.lat_entry.delete(0, tk.END)
+            self.lng_entry.delete(0, tk.END)
+
         except ConnectionError as ce:
             messagebox.showerror(title="Error!", message=str(ce), icon='error')
         except QueryError as qe:
@@ -206,7 +214,7 @@ class ReverseGeocoding:
 
 def main():
     root = tk.Tk()
-    root.geometry("720x520")
+    root.geometry("720x420")
     root.title("Geo-Coding")
     root.iconphoto(False, tk.PhotoImage(file="Assets/Icons/globe_icon.png"))
     _ = Application(root)
