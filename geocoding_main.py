@@ -18,7 +18,7 @@ NOTE: - Make sure to put "your api-key" before running the code.
 import requests
 
 # TODO: #4 Remove the API-KEY at the end.
-API_KEY = "c84c08d456004f69947f60ce5bf0fe7b"
+API_KEY = "YOUR API KEY"
 
 '''
 This method will accept the address to find lat and lng as String and api_key which is declared in configuration.
