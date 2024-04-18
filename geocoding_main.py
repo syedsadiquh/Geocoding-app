@@ -17,7 +17,7 @@ NOTE: - Make sure to put "your api-key" before running the code.
 # Packages Import
 import requests
 
-# TODO: #4 Remove the API-KEY at the end.
+# TODO: Put your API KEY here...
 API_KEY = "YOUR API KEY"
 
 '''
@@ -32,7 +32,6 @@ class QueryError(Exception):
 
 
 def forward_geocode_results(address, api_key=None):
-    # TODO: #1 Handle the Connection Errors of both methods.
     # Setting up the forward geocode api url
     forward_geocode_url = "https://api.opencagedata.com/geocode/v1/json?q={}".format(address)
     if api_key is not None:
@@ -84,7 +83,7 @@ def forward_geocode_results(address, api_key=None):
         # longitude with the highest confidence
         geo_code.append(response["results"][result_number - 1]["geometry"]["lng"])
     else:
-        raise QueryError("Not a Place")     # TODO: Handle the Query Exception
+        raise QueryError("Not a Place")
 
     return geo_code
 
@@ -150,5 +149,6 @@ def reverse_geocode_results(lat, lng, api_key=None):  # TODO: Get a param to ask
 
     return geo_loc
 
+# These lines are for testing the API connectivity and response.
 # print(forward_geocode_results("Gandhi Institute for Technology", API_KEY))
 # print(reverse_geocode_results(20.2215795,85.6735783, API_KEY))
