@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 
 import geocoding_main as gc
+from Browser_Screen import BrowserWindow
 from geocoding_main import QueryError
 from dbConnector import DBConnect
 
@@ -13,7 +14,7 @@ class Application:
     def __init__(self, master):
         self.master = master
         self.forward = False  # Variable for switching modes.
-        self.history_window = ""
+        self.history_window = None
 
         self.welcome_txt = tk.Label(
             master=self.master,
@@ -97,6 +98,7 @@ class ForwardGeocoding:
     def __init__(self, master):
         self.master = master
         self.lat_lng = []
+        self.browser_window = None
         self.address_label = tk.Label(master=self.master, text="Address:", font=('Helvetica bold', 16))
         self.address_label.grid(row=0, column=2, sticky=tk.W)
         self.address_box = tk.Text(master=self.master, width=30, height=10)
@@ -121,6 +123,15 @@ class ForwardGeocoding:
         self.lng_label.grid(row=1, column=0, sticky=tk.W)
         self.lng = tk.Label(master=self.lat_lng_frame, text="N/A")
         self.lng.grid(row=1, column=1, sticky=tk.W)
+
+        self.showBrowser_button = tk.Button(
+            master=self.lat_lng_frame,
+            text="Show in Maps",
+            height=1,
+            width=10,
+            command=self.open_browser
+        )
+        self.showBrowser_button.grid(row=2, column=2)
 
         self.lat_lng_frame.grid(row=1, column=4, pady=20, sticky=tk.N)
 
@@ -150,6 +161,13 @@ class ForwardGeocoding:
             messagebox.showerror(title="Error!", message=str(ce), icon='error')
         except QueryError as qe:
             messagebox.showerror(title="Error!", message=qe.message, icon='error')
+
+    # This method is for opening the Browser window.
+    def open_browser(self):
+        BrowserWindow(self.lat_lng[0], self.lat_lng[1])
+        # self.browser_window = tk.Toplevel()
+        # _ = BrowserWindow(self.browser_window)
+        # self.browser_window.mainloop()
 
 
 # This Class is for the Reverse Geocoding widget
